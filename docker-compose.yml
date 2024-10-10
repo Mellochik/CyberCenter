@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  monitoring:
+    build: ./Monitoring
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://admin:dev@db:5432/postgres
+
+  telegram-bot:
+    build: ./TelegramBot
+    depends_on:
+      - monitoring
+    environment:
+      MONITORING_URL: http://monitoring:8000
+      BOT_TOKEN:
+
+volumes:
+  pgdata:
