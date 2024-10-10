@@ -56,7 +56,7 @@ async def command_parse_url(message: Message, state: FSMContext) -> None:
             async with session.post(os.environ.get('MONITORING_URL') + "/api/v1/add", json=payload) as response:
                 response_json = await response.json()
                 
-                await message.answer(text=response_json['message'] + f'{message.text}')
+                await message.answer(text=response_json['message'] + f' - {message.text}')
     except ValidationError:
         await message.answer(text='Некорректный URL')
     except ClientError:
