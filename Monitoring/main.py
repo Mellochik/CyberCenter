@@ -104,7 +104,7 @@ async def add_source(
     url_str = str(url.url)
     
     existing_user = db.query(models.User).get(user.id)
-    if existing_user is None:
+    if existing_user:
         return JSONResponse(content={"message": "Пользователь не найден"}, status_code=404)
 
     existing_source = db.query(models.Source).filter(
@@ -146,7 +146,7 @@ async def news_hour(
     """ Получить новости за последний час """
 
     existing_user = db.query(models.User).get(user.id)
-    if existing_user is None:
+    if existing_user:
         return JSONResponse(content={"message": "Пользователь не найден"}, status_code=404)
 
     hour_ago = datetime.now() - timedelta(hours=1)
@@ -166,7 +166,7 @@ async def news_day(
     """ Получить новости за последние сутки """
 
     existing_user = db.query(models.User).get(user.id)
-    if existing_user is None:
+    if existing_user:
         return JSONResponse(content={"message": "Пользователь не найден"}, status_code=404)
 
     day_ago = datetime.now() - timedelta(days=1)
